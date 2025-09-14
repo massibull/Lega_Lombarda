@@ -33,21 +33,26 @@
       />
     </div>
   </div>
+  <DraftPhase v-if="fase === 'draft'" />
 </template>
 
 <script>
 import { defineComponent, ref } from 'vue';
 import Card from './components/card.vue';
+import DraftPhase from './components/DraftPhase.vue';
 import { useGameLogic } from './composables/useGameLogic.js'; // <-- aggiornato
+import cardsData from './data/cards.js';
 
 export default defineComponent({
   components: {
     Card,
+    DraftPhase,
   },
   setup() {
     const showMenu = ref(true);
     const showCredits = ref(false);
     const hoveredIndex = ref(null);
+    const fase = ref('menu');
 
     const menuItems = [
       { label: 'Nuova Partita', action: 'newGame' },
@@ -63,6 +68,7 @@ export default defineComponent({
       switch (action) {
         case 'newGame':
           showMenu.value = false;
+          fase.value = 'draft'; // Mostra la fase di draft
           startGame();
           break;
         case 'reviewGame':
@@ -92,6 +98,7 @@ export default defineComponent({
       cards,
       handleMenu,
       backToMenu,
+      fase,
     };
   },
 });
