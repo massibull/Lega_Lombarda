@@ -31,8 +31,8 @@
 
 <script>
 import { ref } from 'vue';
-import Card from './card.vue';
 import cardsData from '../data/cards.js';
+import DraftView from '../views/DraftView.vue';
 
 export default {
   components: { Card },
@@ -90,6 +90,13 @@ export default {
           const others = legaDraft.value.filter(c => c !== card);
           barbarossaHand.value.push(...others);
           // Draft finito, passa alla fase successiva del gioco
+          console.log('Draft completato');
+          console.log('Mano Barbarossa:', barbarossaHand.value);
+          console.log('Mano Lega:', legaHand.value);
+          // Qui puoi aggiungere la logica per passare alla fase successiva del gioco
+          // Ad esempio, emetti un evento o aggiorna uno stato globale
+          gamePhase.value = 'main'; // Esempio di cambio fase
+          DraftView; // Carica la vista di gioco
         }
       }
     }

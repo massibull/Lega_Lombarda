@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card carta">
     <img v-if="image" :src="imageSrc" alt="Card image" class="card-image" />
     <h3>{{ title }}</h3>
     <p v-if="recruitmentOptions">Reclutamento: {{ recruitmentOptions.join(', ') }}</p>
@@ -50,5 +50,18 @@ export default {
   max-width: 200px;
   margin-bottom: 10px;
   border-radius: 4px;
+}
+.carta {
+  width: 120px;
+  border: 2px solid transparent;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.carta:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 </style>

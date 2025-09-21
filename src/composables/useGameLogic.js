@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import cardsData from '../data/cards.js';
 
 export function useGameLogic() {
@@ -35,7 +35,7 @@ export function useGameLogic() {
   const conflicts = ref([]); // { city, type, units: { barbarossa: [], lega: [] } }
 
   // Fase partita
-  const phase = ref('draft'); // 'draft', 'azioni', 'risoluzione'
+  const phase = ref('menu'); // fase iniziale
 
   // Funzioni di utilità
   function shuffle(array) {
@@ -63,6 +63,8 @@ export function useGameLogic() {
       // Passa turno
       draftCards.value.lega = deck.value.splice(0, 2);
       draftPhase.value = 1.5;
+      console.log('Mano Barbarossa:', barbarossa.value.hand);
+      console.log('Mano Lega:', lega.value.hand);
     } else {
       lega.value.hand.push(pickedCard);
       barbarossa.value.hand.push(otherCard);
@@ -70,6 +72,8 @@ export function useGameLogic() {
       draftPhase.value = 2;
       draftCards.value.barbarossa = deck.value.splice(0, 3);
       draftCards.value.lega = deck.value.splice(0, 3);
+      console.log('Mano Barbarossa:', barbarossa.value.hand);
+      console.log('Mano Lega:', lega.value.hand);
     }
   }
 
@@ -82,9 +86,13 @@ export function useGameLogic() {
       barbarossa.value.hand.push(pickedCard);
       lega.value.hand.push(...others);
       draftPhase.value = 2.5;
+      console.log('Mano Barbarossa:', barbarossa.value.hand);
+      console.log('Mano Lega:', lega.value.hand);
     } else {
       lega.value.hand.push(pickedCard);
       barbarossa.value.hand.push(...others);
+      console.log('Mano Barbarossa:', barbarossa.value.hand);
+      console.log('Mano Lega:', lega.value.hand);
       // Draft finito, passa alla fase azioni
       phase.value = 'azioni';
     }
