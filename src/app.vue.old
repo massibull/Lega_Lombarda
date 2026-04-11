@@ -1,0 +1,45 @@
+<!-- src/views/MainView.vue -->
+<template>
+  <MainView v-if="mainPhase === 'menu'" />
+  <CreditsView v-else-if="mainPhase === 'credits'" />
+  <ReviewView v-else-if="mainPhase === 'review'" />
+  <!-- Mostra la vista di gioco anche per 'game' -->
+  <GameView
+    v-else-if="['Plancia','PiazzamentoIniziale','MostraMani','Azioni','RisoluzioneConflitti','Piazzamento'].includes(gamePhase)"
+  />
+    <!--<DraftPhaseView v-else-if="mainPhase === 'draft'" />-->
+  <div v-else class="fallback">Fase sconosciuta: {{ mainPhase }}</div>
+</template>
+
+<script>
+import { defineComponent } from 'vue';
+import { useGameLogic } from './composables/useGameLogic.js';
+import { useAppLogic } from './composables/useAppLogic.js';
+import CreditsView from './views/CreditsView.vue';
+import DraftPhaseView from './views/DraftPhaseView.vue';
+import GameView from './views/GameView.vue';
+import MainView from './views/MainView.vue';
+import ReviewView from './views/ReviewView.vue';
+
+export default defineComponent({
+  name: 'AppRoot',
+  components: { 
+    CreditsView, 
+    DraftPhaseView, 
+    GameView, 
+    MainView,
+    ReviewView,
+  },
+  setup() {
+    const { mainPhase } = useAppLogic();
+    return { mainPhase };
+  },
+});
+</script>
+
+<style>
+.fallback {
+  padding: 16px;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+}
+</style>

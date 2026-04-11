@@ -29,11 +29,14 @@
 </template>
 
 <script>
+import { useAppLogic } from '../composables/useAppLogic.js';
 import { useGameLogic } from '../composables/useGameLogic.js';
 
 export default {
   setup() {
-    const { phase, startGame } = useGameLogic();
+    const { mainPhase } = useAppLogic();
+    const { gamePhase } = useGameLogic();
+    const { startGame } = useGameLogic();
 
     const items = [
       { label: 'Nuova Partita', action: 'newGame' },
@@ -47,19 +50,24 @@ export default {
         // opzionale: inizializza lo stato di gioco
         try { startGame && startGame(); } catch {}
         // mostra subito la GameView
-        phase.value = 'game';
+        mainPhase.value = 'game';
+        gamePhase.value = 'Plancia';
         return;
       }
       if (action === 'reviewGame') {
-        phase.value = 'review';
+        mainPhase.value = 'review';
         return;
       }
       if (action === 'credits') {
-        phase.value = 'credits';
+        mainPhase.value = 'credits';
         return;
       }
       if (action === 'exit') {
-        window.close();
+        // opzionale: salva lo stato di gioco
+        try { saveGame && saveGame(); } catch {}
+        // chiudi la finestra (funziona solo in app desktop)
+        if (window.close) window.close();
+        return;
       }
     }
 

@@ -3,7 +3,7 @@
     <aside class="sidebar">
       <h3>Fasi partita</h3>
       <ul>
-        <li v-for="p in phases" :key="p.key" :class="{ active: phase === p.key }">
+        <li v-for="p in phases" :key="p.key" :class="{ active: currentPhase === p.key }">
           {{ p.label }}
         </li>
       </ul>
@@ -37,13 +37,16 @@
 
 <script>
 import { computed } from 'vue';
+import { useAppLogic } from '../composables/useAppLogic.js';
 import { useGameLogic } from '../composables/useGameLogic.js';
 
 export default {
   setup() {
-    const { phase: phaseRef, barbarossa: bRef, lega: lRef } = useGameLogic();
+    const { mainPhase } = useAppLogic();
+    const { barbarossa: bRef, lega: lRef } = useGameLogic();
 
     const phases = [
+      { key: 'game', label: 'Gioco' },
       { key: 'draft', label: 'Influenza (Draft)' },
       { key: 'initialPlacement', label: 'Piazzamento iniziale' },
       { key: 'showHands', label: 'Mostra mani' },
@@ -51,11 +54,12 @@ export default {
       { key: 'risoluzione', label: 'Risoluzione' },
     ];
 
-    const phase = computed(() => phaseRef.value);
-    const barbarossa = computed(() => bRef.value);
-    const lega = computed(() => lRef.value);
-
-    return { phase, phases, barbarossa, lega };
+    return {
+      phases,
+      currentPhase: computed(() => mainPhase.value),
+      barbarossa: computed(() => bRef.value),
+      lega: computed(() => lRef.value),
+    };
   },
 };
 </script>

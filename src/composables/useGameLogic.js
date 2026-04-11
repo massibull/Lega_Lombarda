@@ -35,7 +35,8 @@ export function useGameLogic() {
   const conflicts = ref([]); // { city, type, units: { barbarossa: [], lega: [] } }
 
   // Fase partita
-  const phase = ref('menu'); // fase iniziale
+  // const mainPhase = ref('menu'); // fase iniziale
+  const gamePhase = ref('Plancia'); // 'Plancia', 'PiazzamentoIniziale', 'MostraMani', 'Azioni', 'RisoluzioneConflitti', 'Piazzamento'
 
   // Funzioni di utilità
   function shuffle(array) {
@@ -44,7 +45,7 @@ export function useGameLogic() {
 
   // Draft
   function startDraft() {
-    phase.value = 'draft';
+    gamePhase.value = 'draft';
     draftPhase.value = 1;
     deck.value = shuffle([...deck.value, ...discardPile.value]);
     discardPile.value = [];
@@ -94,7 +95,7 @@ export function useGameLogic() {
       console.log('Mano Barbarossa:', barbarossa.value.hand);
       console.log('Mano Lega:', lega.value.hand);
       // Draft finito, passa alla fase azioni
-      phase.value = 'azioni';
+      gamePhase.value = 'azioni';
     }
   }
 
@@ -112,7 +113,7 @@ export function useGameLogic() {
   // Fase Azioni
   const currentPlayer = ref('barbarossa'); // chi ha il vantaggio su controlloItalia
   function startActions() {
-    phase.value = 'azioni';
+    gamePhase.value = 'azioni';
     // Determina chi inizia
     currentPlayer.value = controlloItalia.value <= 3 ? 'barbarossa' : 'lega';
   }
@@ -159,7 +160,7 @@ export function useGameLogic() {
 
   // Fase Risoluzione
   function resolveConflicts() {
-    phase.value = 'risoluzione';
+    gamePhase.value = 'risoluzione';
     conflicts.value.forEach((conflict, idx) => {
       // Calcola forza totale
       const barbTotal = conflict.units.barbarossa.reduce((sum, u) => sum + u.num, 0);
@@ -222,7 +223,7 @@ export function useGameLogic() {
 
   return {
     round,
-    phase,
+    gamePhase,
     barbarossa,
     lega,
     deck,
